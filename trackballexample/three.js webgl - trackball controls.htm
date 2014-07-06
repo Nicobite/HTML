@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>three.js webgl - trackball controls</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				color: #000;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+				font-weight: bold;
+
+				background-color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#info {
+				color:#000;
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+
+			}
+
+			a {
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container"><canvas style="width: 1600px; height: 773px;" height="773" width="1600"></canvas><div style="width: 80px; opacity: 0.9; cursor: pointer; position: absolute; top: 0px; z-index: 100;" id="stats"><div style="padding: 0px 0px 3px 3px; text-align: left; background-color: rgb(0, 0, 34);" id="fps"><div style="color: rgb(0, 255, 255); font-family: Helvetica,Arial,sans-serif; font-size: 9px; font-weight: bold; line-height: 15px;" id="fpsText">0 FPS (0-11)</div><div style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 255);" id="fpsGraph"><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.2px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.2px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.2px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 26.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.1px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.2px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.1px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 28.2px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 29.7px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span></div></div><div style="padding: 0px 0px 3px 3px; text-align: left; background-color: rgb(0, 34, 0); display: none;" id="ms"><div style="color: rgb(0, 255, 0); font-family: Helvetica,Arial,sans-serif; font-size: 9px; font-weight: bold; line-height: 15px;" id="msText">3111 MS (7-11201)</div><div style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 0);" id="msGraph"><span style="width: 1px; height: 15.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.2px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 13.2px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.55px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.1px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.15px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 12.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 28.5px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 12.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 13.2px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.1px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.25px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.55px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 11.4px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 11.4px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.3px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 12.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 13.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 12.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.4px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 28.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 28.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.45px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 10.05px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 8.25px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 11.4px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.3px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.15px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 11.55px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.15px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 13.8px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 16.2px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 10.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.9px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 28.35px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 12.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.25px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 14.55px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.75px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 15.9px; float: left; background-color: rgb(17, 51, 17);"></span></div></div></div></div>
+		<div id="info">
+			<a href="http://threejs.org/" target="_blank">three.js</a> - trackball controls example<br>
+			MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
+		</div>
+
+		<script src="three.js%20webgl%20-%20trackball%20controls_fichiers/three.js"></script>
+
+		<script src="three.js%20webgl%20-%20trackball%20controls_fichiers/TrackballControls.js"></script>
+
+		<script src="three.js%20webgl%20-%20trackball%20controls_fichiers/Detector.js"></script>
+		<script src="three.js%20webgl%20-%20trackball%20controls_fichiers/stats.js"></script>
+
+		<script>
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+			var container, stats;
+
+			var camera, controls, scene, renderer;
+
+			var cross;
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.z = 500;
+
+				controls = new THREE.TrackballControls( camera );
+
+				controls.rotateSpeed = 1.0;
+				controls.zoomSpeed = 1.2;
+				controls.panSpeed = 0.8;
+
+				controls.noZoom = false;
+				controls.noPan = false;
+
+				controls.staticMoving = true;
+				controls.dynamicDampingFactor = 0.3;
+
+				controls.keys = [ 65, 83, 68 ];
+
+				controls.addEventListener( 'change', render );
+
+				// world
+
+				scene = new THREE.Scene();
+				scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+
+				var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
+				var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading } );
+
+				for ( var i = 0; i < 500; i ++ ) {
+
+					var mesh = new THREE.Mesh( geometry, material );
+					mesh.position.x = ( Math.random() - 0.5 ) * 1000;
+					mesh.position.y = ( Math.random() - 0.5 ) * 1000;
+					mesh.position.z = ( Math.random() - 0.5 ) * 1000;
+					mesh.updateMatrix();
+					mesh.matrixAutoUpdate = false;
+					scene.add( mesh );
+
+				}
+
+
+				// lights
+
+				light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
+
+				light = new THREE.DirectionalLight( 0x002288 );
+				light.position.set( -1, -1, -1 );
+				scene.add( light );
+
+				light = new THREE.AmbientLight( 0x222222 );
+				scene.add( light );
+
+
+				// renderer
+
+				renderer = new THREE.WebGLRenderer( { antialias: false } );
+				renderer.setClearColor( scene.fog.color, 1 );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				container = document.getElementById( 'container' );
+				container.appendChild( renderer.domElement );
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				stats.domElement.style.zIndex = 100;
+				container.appendChild( stats.domElement );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				//
+
+				render();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				controls.handleResize();
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+				stats.update();
+
+			}
+
+
+		</script>
+
+	
+
+</body></html>
