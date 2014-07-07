@@ -1,4 +1,4 @@
-.bordered
+body
 {
-    border: 1px blue dashed;
+	background-color: rgb(240,240,240);
 }

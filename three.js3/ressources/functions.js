@@ -1,14 +1,12 @@
 /* #DEFINES :'( */
 
-var FACTOR = 0.7;
+var RENDER_SIZE_FACTOR = 0.7;
 
 
 /* GLOBAL VARIABLES */
 
 var scene, camera, renderer;
 var geometry, material, mesh;
-var initX, initY;
-var diffX, diffY;
 var controls;
 
 
@@ -18,15 +16,18 @@ var controls;
 	Creates a scene, a camera, draws a mesh
 */
 function init() {
+	/* Setting up the scene */
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 750;
+	/* Drawing stuff */
 	geometry = new THREE.BoxGeometry( 200, 200, 200 );
 	material = new THREE.MeshBasicMaterial( { color: 0xf55000, wireframe: false } );
 	mesh = new THREE.Mesh( geometry, material );
 	scene.add( mesh );
+	/* Rendering */
 	renderer = new THREE.CanvasRenderer();
-	renderer.setSize( window.innerWidth * FACTOR, window.innerHeight * FACTOR );
+	renderer.setSize( window.innerWidth * RENDER_SIZE_FACTOR, window.innerHeight * RENDER_SIZE_FACTOR );
 	document.body.appendChild( renderer.domElement );
 }
 
@@ -72,7 +73,7 @@ function trackball(){
 	controls.staticMoving = true;
 	
 	/*Unknown, found on website*/
-	//controls.dynamicDampingFactor = 28;
+	//controls.dynamicDampingRENDER_SIZE_FACTOR = 28;
 	//controls.keys = [ 65, 83, 68 ];
 	//controls.addEventListener( 'change', render );
 }
