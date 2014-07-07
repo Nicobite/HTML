@@ -1,6 +1,8 @@
 /* #DEFINES :'( */
 
 var RENDER_SIZE_FACTOR = 0.7;
+var PLACE_RADIUS = 75;
+var PLACE_RESOLUTION = 32;
 
 
 /* GLOBAL VARIABLES */
@@ -21,10 +23,7 @@ function init() {
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 750;
 	/* Drawing stuff */
-	geometry = new THREE.BoxGeometry( 200, 200, 200 );
-	material = new THREE.MeshBasicMaterial( { color: 0xf55000, wireframe: false } );
-	mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION));
 	/* Rendering */
 	renderer = new THREE.CanvasRenderer();
 	renderer.setSize( window.innerWidth * RENDER_SIZE_FACTOR, window.innerHeight * RENDER_SIZE_FACTOR );
