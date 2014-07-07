@@ -3,6 +3,7 @@
 var RENDER_SIZE_FACTOR = 0.8;
 var PLACE_RADIUS = 75;
 var PLACE_RESOLUTION = 32;
+var STD_PLANE_Z = 250;
 
 
 /* GLOBAL VARIABLES */
@@ -23,11 +24,13 @@ function init() {
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 750;
 	/* Drawing stuff */
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,0));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,300,0));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,-300,0));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,300));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,-450));
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,0,-STD_PLANE_Z));
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,300,0,-STD_PLANE_Z));
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,-300,0,-STD_PLANE_Z));
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,300,+STD_PLANE_Z));
+	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,-450,+STD_PLANE_Z));
+	scene.add( draw_transition(0,0,+STD_PLANE_Z,'h'));
+	scene.add( draw_transition(150,0,-STD_PLANE_Z,'v'));
 	/* Rendering */
 	renderer = new THREE.CanvasRenderer();
 	renderer.setSize( window.innerWidth * RENDER_SIZE_FACTOR, window.innerHeight * RENDER_SIZE_FACTOR );
