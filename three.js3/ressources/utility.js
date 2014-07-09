@@ -5,9 +5,9 @@
 	//TODO Si les linewidth pouvaient scale avec le zoom, la vie serait plus belle.		
 		
 
-var TR_WIDTH = 7;
+var TR_WIDTH = 8;
 var TR_HEIGHT = 50;
-var ARROW_FACTOR = 1;
+var ARROW_FACTOR = 20;
 var ARROW_ANGLE = 0.52; /* pi/6 */
 		
 		
@@ -49,20 +49,19 @@ function draw_transition(x,y,z,direction){
 		var v2 = new THREE.Vector3(x-TR_HEIGHT,y+TR_WIDTH,z);
 		var v3 = new THREE.Vector3(x-TR_HEIGHT,y-TR_WIDTH,z);
 		var v4 = new THREE.Vector3(x+TR_HEIGHT,y-TR_WIDTH,z);
-		var v5 = v1;//*/
 	}
 	geometry.vertices.push(v1);
 	geometry.vertices.push(v2);
 	geometry.vertices.push(v3);
 	geometry.vertices.push(v4);
-	geometry.vertices.push(v5);//*/
-	geometry.faces.push(new THREE.Face3(0,1,2,4,5));
+	geometry.faces.push(new THREE.Face3(0,1,2));
+	geometry.faces.push(new THREE.Face3(0,2,3));
 	//geometry.computeFaceNormals();
-	var material = new THREE.LineBasicMaterial({
+	var material = new THREE.MeshBasicMaterial({
         color: 0x000000,
 		linewidth: 2
     });//*/
-	var line = new THREE.Line(geometry, material);
+	var line = new THREE.Mesh(geometry, material);
 	return line;
 }
 
@@ -112,31 +111,35 @@ function draw_arrow(x1,y1,x2,y2,z){
 	Returns an arrow as well without using arrowHelper.
 */
 function draw_arrow2(x1,y1,x2,y2,z){
+	var ARROW_SIZE = 20;
+	var ARROW_SIZE_TOO = 6;
 	var geometry = new THREE.Geometry();
-	var norm = new THREE.Vector3(x2-x1,y2-y1,z).normalize();
 	var v1 = new THREE.Vector3(x1,y1,z);
 	var v2 = new THREE.Vector3(x2,y2,z);
-	//TODO
-	var v3 = new THREE.Vector3(-1000,0,z);
-	var v4 = new THREE.Vector3(-1000,-100,z);
-	
-	
+	var D = v1.distanceTo(v2);
+	var v3 = new THREE.Vector3((x2*(D-ARROW_SIZE)+x1*ARROW_SIZE)/D
+							  ,(y2*(D-ARROW_SIZE)+y1*ARROW_SIZE)/D
+							  ,z);
+	var normal10 = new THREE.Vector3((y2-y1),(x1-x2),0).normalize().multiplyScalar(ARROW_SIZE_TOO);
+	var v4 = new THREE.Vector3();
+	var v5 = new THREE.Vector3();
+	v4.addVectors(v3,normal10);
+	v5.subVectors(v3,normal10);
 	/*
 	.applyAxisAngle(axis, angle) this
 	axis -- A normalized Vector3
 	angle -- An angle in radians
 	Applies a rotation specified by an axis and an angle to this vector. 
 	*/
-	
 	geometry.vertices.push(v1);
 	geometry.vertices.push(v2);
-	geometry.vertices.push(v3);
-	geometry.vertices.push(v2);
 	geometry.vertices.push(v4);
-	geometry.faces.push(new THREE.Face3(0,1,2,4,5));
+	geometry.vertices.push(v2);
+	geometry.vertices.push(v5);
+	//geometry.faces.push(new THREE.Face3(1,2,4)); // not eneded for now
 	var material = new THREE.LineBasicMaterial({
         color: 0x000000,
-		linewidth: 1
+		linewidth: 2
     });//*/
 	var line = new THREE.Line(geometry, material);
 	return line;

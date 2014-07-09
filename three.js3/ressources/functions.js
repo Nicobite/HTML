@@ -31,7 +31,8 @@ function init() {
 	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,-450,+STD_PLANE_Z));
 	scene.add( draw_transition(0,0,+STD_PLANE_Z,'h'));
 	scene.add( draw_transition(150,0,-STD_PLANE_Z,'v'));
-	scene.add( draw_arrow2(0,0,200,100,-STD_PLANE_Z));
+	scene.add( draw_arrow2(0,+8,600,300-75,+STD_PLANE_Z));
+	scene.add( draw_arrow2(0,+8,0,300-75,+STD_PLANE_Z));
 	/* Rendering */
 	renderer = new THREE.CanvasRenderer();
 	renderer.setSize( window.innerWidth * RENDER_SIZE_FACTOR, window.innerHeight * RENDER_SIZE_FACTOR );
