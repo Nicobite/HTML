@@ -1,5 +1,5 @@
 /* http://stackoverflow.com/questions/10806529/threejs-webgl-most-performant-way-for-just-cubes
-		^ nécessaire pour la suite par souci de performance */
+		TODO ^ nécessaire pour la suite par souci de performance */
 
 		
 	//TODO Si les linewidth pouvaient scale avec le zoom, la vie serait plus belle.		
@@ -9,7 +9,9 @@ var TR_WIDTH = 8;
 var TR_HEIGHT = 50;
 var ARROW_FACTOR = 20;
 var ARROW_ANGLE = 0.52; /* pi/6 */
-		
+
+var TR_MATERIAL = new THREE.MeshBasicMaterial({color: 0x000000,linewidth: 2})
+
 		
 /**
 	Returns a line in the shape of a circle
@@ -93,24 +95,9 @@ function draw_transition_thin(x,y,z,direction){
 
 
 /**
-	Returns an arrow.
-*/
-function draw_arrow(x1,y1,x2,y2,z){
-	var length = 500; var hex = 0xff0000;
-	var arrow = new THREE.ArrowHelper( new THREE.Vector3( x2-x1, y2-y1, z )
-									 , new THREE.Vector3( x1, y1, z )
-									 , Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
-									 , hex
-									 , 50
-									 , 50);
-	return arrow;
-}
-
-
-/**
 	Returns an arrow as well without using arrowHelper.
 */
-function draw_arrow2(x1,y1,x2,y2,z){
+function draw_arrow(x1,y1,x2,y2,z){
 	var ARROW_SIZE = 20;
 	var ARROW_SIZE_TOO = 6;
 	var geometry = new THREE.Geometry();

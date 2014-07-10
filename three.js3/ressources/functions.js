@@ -12,6 +12,9 @@ var scene, camera, renderer;
 var geometry, material, mesh;
 var controls;
 
+var lvl1 = new THREE.Object3D();
+var lvl2 = new THREE.Object3D();
+
 
 /* USEFUL FUNCTIONS */
 
@@ -24,15 +27,18 @@ function init() {
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 750;
 	/* Drawing stuff */
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,0,-STD_PLANE_Z));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,300,0,-STD_PLANE_Z));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,-300,0,-STD_PLANE_Z));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,300,+STD_PLANE_Z));
-	scene.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,-450,+STD_PLANE_Z));
-	scene.add( draw_transition(0,0,+STD_PLANE_Z,'h'));
-	scene.add( draw_transition(150,0,-STD_PLANE_Z,'v'));
-	scene.add( draw_arrow2(0,+8,600,300-75,+STD_PLANE_Z));
-	scene.add( draw_arrow2(0,+8,0,300-75,+STD_PLANE_Z));
+	lvl1.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,0,-STD_PLANE_Z));
+	lvl1.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,300,0,-STD_PLANE_Z));
+	lvl1.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,-300,0,-STD_PLANE_Z));
+	lvl2.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,300,+STD_PLANE_Z));
+	lvl2.add( draw_circle(PLACE_RADIUS,PLACE_RESOLUTION,0,-450,+STD_PLANE_Z));
+	lvl2.add( draw_transition(0,0,+STD_PLANE_Z,'h'));
+	lvl1.add( draw_transition(150,0,-STD_PLANE_Z,'v'));
+	lvl2.add( draw_arrow(250,-200,0,-8,+STD_PLANE_Z));
+	lvl2.add( draw_arrow(0,+8,0,300-75,+STD_PLANE_Z));
+	/* Adding levels to scene */
+	scene.add(lvl1);
+	scene.add(lvl2);
 	/* Rendering */
 	renderer = new THREE.CanvasRenderer();
 	renderer.setSize( window.innerWidth * RENDER_SIZE_FACTOR, window.innerHeight * RENDER_SIZE_FACTOR );
